@@ -1,4 +1,8 @@
-import com.jb.cpwp.*
+import com.jb.cpwp.Deck
+import com.jb.cpwp.Deck.Companion.standardDeckOf52
+import com.jb.cpwp.Game
+import com.jb.cpwp.Player
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -16,17 +20,8 @@ class DealerTest {
 
     @Test
     fun `create deck of 52`() {
-        val deck = Deck(Deck.standardDeckOf52())
+        val deck = Deck(standardDeckOf52())
         assertEquals(52, deck.size())
-    }
-
-    @Test
-    fun `understand equals in Kotlin`(){
-        val deck1 = Deck()
-        val deck2 = Deck(Deck.standardDeckOf52())
-        assertEquals(deck1, deck2)  //data class or override equals()/hashcode()
-        deck1.shuffle()
-        assertEquals(deck1, deck2)
     }
 
     @Test
@@ -45,7 +40,8 @@ class DealerTest {
         assertNotEquals(player2.hand, player4.hand)
         assertNotEquals(player3.hand, player4.hand)
     }
-@Test
+
+    @Test
     fun `deal cards distributes all the cards across six players adding extra cards individually to as many players as necessary`(){
         val deck = Deck()
         val game = Game(deck, sixPlayers())
@@ -59,15 +55,23 @@ class DealerTest {
     }
 
     @Test
-    fun `shufflin`(){
-        val deck = Deck(Deck.standardDeckOf52())
+    fun `all decks are shuffled`(){
+        val deck = Deck(standardDeckOf52())
         val sixPlayers = sixPlayers()
         val game = Game(deck, sixPlayers)
         game.deal()
 
-        for(player in sixPlayers){
-            println(player.hand)
-        }
+        for(player in sixPlayers) println(player.hand)
     }
 
+    @Test
+    fun `understand equals in Kotlin`(){
+        val deck1 = Deck(standardDeckOf52())
+        val deck2 = Deck(standardDeckOf52())
+        assertDeepNotEquals(deck1.cards, deck2.cards)
+    }
+
+    private fun assertDeepNotEquals(first: Set<Any>, second: Set<Any>) {
+        assertTrue(first.zip(second).any { (x, y) -> x != y })
+    }
 }
