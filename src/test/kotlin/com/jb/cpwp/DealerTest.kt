@@ -1,7 +1,6 @@
-import com.jb.cpwp.Deck
+package com.jb.cpwp
+
 import com.jb.cpwp.Deck.Companion.standardDeckOf52
-import com.jb.cpwp.Game
-import com.jb.cpwp.Player
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
