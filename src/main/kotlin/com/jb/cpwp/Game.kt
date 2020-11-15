@@ -19,5 +19,3 @@ class Game(private val deck: Deck) {
 fun <T> Set<T>.pivot(cards: Set<Card>): Collection<List<Card>> {
     return cards.groupBy { cards.indexOf(it) % size }.values
 }
-
-

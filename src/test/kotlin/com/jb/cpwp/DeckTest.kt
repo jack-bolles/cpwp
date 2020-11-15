@@ -18,12 +18,6 @@ class DeckTest {
     private fun sixPlayers() = seatPlayers(player1, player2, player3, player4, player5, player6)
 
     @Test
-    fun `create deck of 52`() {
-        val deck = Deck(standardDeckOf52())
-        assertEquals(52, deck.size())
-    }
-
-    @Test
     fun `deal cards distributes all the cards across four players`(){
         val players = Game(Deck()).deal(fourPlayers())
         assertTrue(players.all { it.hand.size == 13 })

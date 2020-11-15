@@ -4,11 +4,6 @@ typealias Players = Set<Player>
 
 fun seatPlayers(vararg players: Player): Players { return players.toSet() }
 
-fun Players.nextPlayer(): Player {
-    //TODO("Not yet implemented")
-    return this.iterator().next()
-}
-
 
 data class Player(val name:String) {
     fun withHand(hand: Set<Card>): Player {
@@ -21,13 +16,7 @@ data class Player(val name:String) {
         //if yes, true
         val slotsMap: Map<Suit, List<Card>> = table.openSlots()
         val slots = slotsMap.values.flatten()
-
-//        if(!table.open()){
-//            return hand.contains(Card(Suit.DIAMONDS, 7))
-//        }
-        val intersect = hand.intersect(slots)
-
-        return intersect.isNotEmpty()
+        return hand.intersect(slots).isNotEmpty()
 
     }
 
