@@ -1,20 +1,14 @@
 package com.jb.cpwp
 
-class Game(private val deck: Deck, private val players: Set<Player>) {
-    fun deal() {
-        val cards = deck.shuffle().cards
-        val hands = cards.groupBy { cards.indexOf(it) % players.size }
+class Game(private val deck: Deck) {
 
-        //TODO - see q in slack; understand suggested behaviour
-        for(player in players){
-            player.hand = hands[players.indexOf(player)]?.toSet() ?: error("Mis-deal!")
-        }
+    fun deal(players: Set<Player>): Set<Player> {
+        val hands = players.pivot(deck.cards)
+        return players.zip(hands).map { (player, hand) -> player.withHand(hand.toSet()) }.toSet()
     }
+}
 
-    //suggested by Dave in Slack
-//    val hands  = cards.groupBy { cards.indexOf(it) % players.size }.values
-//    val playersWithHands = players.zip(hands).map { (player, hand) ->
-//        player.withHand(hand)
-//    }
+fun <T> Set<T>.pivot(cards: Set<Card>): Collection<List<Card>> {
+    return cards.groupBy { cards.indexOf(it) % size }.values
 }
 
