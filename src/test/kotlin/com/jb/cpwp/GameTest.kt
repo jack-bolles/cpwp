@@ -20,7 +20,7 @@ class GameTest{
         player3.hand = Suit.createSuit(Suit.HEARTS)
         player4.hand = Suit.createSuit(Suit.DIAMONDS)
 
-        //usurping the Game constructor -- bad programmer
+        //TODO usurping the Game constructor -- bad programmer
         val expectedFirst = whoStarts(fourPlayers())
         assertEquals(player3.name, expectedFirst.name)
     }
