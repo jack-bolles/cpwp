@@ -2,13 +2,13 @@ package com.jb.cpwp
 
 class Game(private val deck: Deck) {
 
-    fun deal(players: Set<Player>): Set<Player> {
+    fun deal(players: Players): Players {
         val hands = players.pivot(deck.cards)
         return players.zip(hands).map { (player, hand) -> player.withHand(hand.toSet()) }.toSet()
     }
-
+    
     companion object {
-        fun whoStarts(players: Set<Player>) =
+        fun whoStarts(players: Players) =
                 players.single { it.hand.contains(Card(Suit.HEARTS, 7)) }
     }
 }

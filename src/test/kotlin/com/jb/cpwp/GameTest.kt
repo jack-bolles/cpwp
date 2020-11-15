@@ -1,5 +1,6 @@
 package com.jb.cpwp
 
+import com.jb.cpwp.Game.Companion.whoStarts
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -12,25 +13,18 @@ class GameTest{
     private val player5 = Player("Fifth")
     private val player6 = Player("Sixth")
 
-    private fun fourPlayers() = setOf(player1, player2, player3, player4)
+    private fun fourPlayers() = seatPlayers(player1, player2, player3, player4)
 
     @Test
     fun `start game with 7 of Hearts`(){
         val game = Game(Deck())
-        val players = game.deal(fourPlayers())
+        player1.hand = Suit.createSuit(Suit.SPADES)
+        player2.hand = Suit.createSuit(Suit.CLUBS)
+        player3.hand = Suit.createSuit(Suit.HEARTS)
+        player4.hand = Suit.createSuit(Suit.DIAMONDS)
 
-        player1.hand = Suit.createSuit(Suit.HEARTS)
-        player2.hand = Suit.createSuit(Suit.DIAMONDS)
-        player3.hand = Suit.createSuit(Suit.CLUBS)
-        player4.hand = Suit.createSuit(Suit.SPADES)
-
-        val expectedFirst = whoStarts(players)
-        assertEquals(player1.name, expectedFirst.name)
-
-    }
-
-    companion object {
-        fun whoStarts(players: Set<Player>) =
-                players.single { it.hand.contains(Card(Suit.HEARTS, 7)) }
+        //usurping the constructor -- bad programmer
+        val expectedFirst = whoStarts(fourPlayers())
+        assertEquals(player3.name, expectedFirst.name)
     }
 }

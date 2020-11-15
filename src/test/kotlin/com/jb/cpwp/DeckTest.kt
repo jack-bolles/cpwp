@@ -14,8 +14,8 @@ class DeckTest {
     private val player4 = Player("Fourth")
     private val player5 = Player("Fifth")
     private val player6 = Player("Sixth")
-    private fun fourPlayers() = setOf(player1, player2, player3, player4)
-    private fun sixPlayers() = setOf(player1, player2, player3, player4, player5, player6)
+    private fun fourPlayers() = seatPlayers(player1, player2, player3, player4)
+    private fun sixPlayers() = seatPlayers(player1, player2, player3, player4, player5, player6)
 
     @Test
     fun `create deck of 52`() {
