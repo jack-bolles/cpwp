@@ -6,6 +6,11 @@ class Game(private val deck: Deck) {
         val hands = players.pivot(deck.cards)
         return players.zip(hands).map { (player, hand) -> player.withHand(hand.toSet()) }.toSet()
     }
+
+    companion object {
+        fun whoStarts(players: Set<Player>) =
+                players.single { it.hand.contains(Card(Suit.HEARTS, 7)) }
+    }
 }
 
 fun <T> Set<T>.pivot(cards: Set<Card>): Collection<List<Card>> {

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 
-class DealerTest {
+class DeckTest {
 
     private val player1 = Player("First")
     private val player2 = Player("Second")
@@ -50,11 +50,11 @@ class DealerTest {
         val deck1 = Deck(standardDeckOf52())
         val deck2 = Deck(standardDeckOf52())
         assertEquals(deck1.cards, deck2.cards)
-        assertTrue(deck1.cards.elementsInOrder(deck1.cards))
-        assertTrue(! deck1.cards.elementsInOrder(deck2.cards))
+        assertTrue(deck1.cards.areElementsInOrder(deck1.cards))
+        assertTrue(! deck1.cards.areElementsInOrder(deck2.cards))
     }
 }
 
-fun <T> Set<T>.elementsInOrder(toMatch: Set<T>): Boolean { return this.zip(toMatch).all { (x, y) -> x == y } }
+fun <T> Set<T>.areElementsInOrder(toMatch: Set<T>): Boolean { return this.zip(toMatch).all { (x, y) -> x == y } }
 
 fun <T> Set<T>.takeLast(n: Int): List<T> { return this.toList().takeLast(n) }
