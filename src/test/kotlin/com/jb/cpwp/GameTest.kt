@@ -27,4 +27,24 @@ class GameTest{
         val expectedFirst = whoStarts(fourPlayers())
         assertEquals(player3.name, expectedFirst.name)
     }
+
+    @Test
+    fun `play proceeds in order of seating`(){
+        player1.hand = Suit.createSuit(Suit.SPADES)
+        player2.hand = Suit.createSuit(Suit.CLUBS)
+        player3.hand = Suit.createSuit(Suit.HEARTS)
+        player4.hand = Suit.createSuit(Suit.DIAMONDS)
+
+        val players = fourPlayers()
+        val expectedFirst = whoStarts(players)
+        assertEquals(player3.name, expectedFirst.name)
+
+        val table = Table(Suit.values().toSet())
+        for(player in players){
+            var open = player.canPlay(table)
+            println(""+player.name+":"+open)
+
+        }
+
+    }
 }
