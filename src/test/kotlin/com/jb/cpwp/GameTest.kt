@@ -26,7 +26,7 @@ class GameTest{
     }
 
     @Test
-    fun `play proceeds in order of seating`(){
+    fun `play starts with the 7 of Hearts`(){
         player1.hand = Suit.createSuit(Suit.SPADES)
         player2.hand = Suit.createSuit(Suit.CLUBS)
         player3.hand = Suit.createSuit(Suit.HEARTS)
