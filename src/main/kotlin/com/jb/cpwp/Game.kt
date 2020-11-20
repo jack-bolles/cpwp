@@ -1,10 +1,11 @@
 package com.jb.cpwp
 
 class Game(private val deck: Deck) {
+    val table = Table(deck.suits())
 
     fun deal(players: Players): Players {
         val hands = players.pivot(deck.cards)
-        return players.zip(hands).map { (player, hand) -> player.withHand(hand.toSet()) }.toSet()
+        return players.zip(hands).map { (player, hand) -> player.withHand(hand) }.toSet()
     }
 
     companion object {
@@ -16,6 +17,6 @@ class Game(private val deck: Deck) {
     }
 }
 
-fun <T> Set<T>.pivot(cards: Set<Card>): Collection<List<Card>> {
-    return cards.groupBy { cards.indexOf(it) % size }.values
+fun <T> Set<T>.pivot(cards: Set<Card>): Set<List<Card>> {
+    return cards.groupBy { cards.indexOf(it) % size }.values.toSet()
 }

@@ -6,8 +6,8 @@ fun seatPlayers(vararg players: Player): Players { return players.toSet() }
 
 
 data class Player(val name:String) {
-    fun withHand(hand: Set<Card>): Player {
-        return Player(name, hand)
+    fun withHand(hand: Iterable<Card>): Player {
+        return Player(name, hand.toSet())
     }
 
     fun canPlay(table: Table): Boolean {
