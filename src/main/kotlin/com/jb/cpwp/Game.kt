@@ -14,6 +14,11 @@ class Game(private val deck: Deck) {
         fun whoStarts(players: Players): Player {
             return players.single { it.hand.contains(openingCard) }
         }
+
+        fun start(players: Players): Pair<Table, Players> {
+            val game = Game(Deck(Deck.standardDeckOf52()))
+            return Pair(game.table, game.deal(players))
+        }
     }
 }
 
