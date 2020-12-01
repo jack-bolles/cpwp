@@ -2,14 +2,10 @@ package com.jb.cpwp
 
 import com.jb.cpwp.Suit.*
 
-
 class Table(suits: Set<Suit>) {
 
-    private val suitRows = mutableMapOf<Suit, MutableSet<Card>>()
-
-    init {
-        suits.forEach { it -> suitRows[it] = mutableSetOf() }
-    }
+    //todo - mutable bad?
+    private val suitRows = suits.associateBy<Suit, Suit, MutableSet<Card>>({ it }, { mutableSetOf() })
 
     fun openSlots(): Map<Suit, List<Card>> {
         return if (suitRows[HEARTS]?.isEmpty()!!)

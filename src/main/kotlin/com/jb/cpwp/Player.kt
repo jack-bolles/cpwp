@@ -2,13 +2,7 @@ package com.jb.cpwp
 
 typealias Players = Set<Player>
 
-fun seatPlayers(vararg players: Player): Players { return players.toSet() }
-
-
-data class Player(val name:String) {
-    fun withHand(hand: Iterable<Card>): Player {
-        return Player(name, hand.toSet())
-    }
+data class Player(val name:String, var hand: Set<Card> = setOf()) {
 
     fun canPlay(table: Table): Boolean {
         //for each suit in the hand
@@ -19,10 +13,4 @@ data class Player(val name:String) {
         return hand.intersect(slots).isNotEmpty()
 
     }
-
-    constructor(name: String, hand: Set<Card>) : this(name) {
-        this.hand = hand
-    }
-
-    lateinit var hand: Set<Card>
 }

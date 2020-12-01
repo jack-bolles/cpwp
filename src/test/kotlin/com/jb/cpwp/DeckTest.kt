@@ -8,25 +8,25 @@ import kotlin.test.assertEquals
 
 class DeckTest {
 
-    private val player1 = Player("First")
-    private val player2 = Player("Second")
-    private val player3 = Player("Third")
-    private val player4 = Player("Fourth")
-    private val player5 = Player("Fifth")
-    private val player6 = Player("Sixth")
-    private fun fourPlayers() = seatPlayers(player1, player2, player3, player4)
-    private fun sixPlayers() = seatPlayers(player1, player2, player3, player4, player5, player6)
+    private val playerName1 = "First"
+    private val playerName2 = "Second"
+    private val playerName3 = "Third"
+    private val playerName4 = "Fourth"
+    private val playerName5 = "Fifth"
+    private val playerName6 = "Sixth"
+    private fun fourPlayers() = setOf(playerName1, playerName2, playerName3, playerName4)
+    private fun sixPlayers() = setOf(playerName1, playerName2, playerName3, playerName4, playerName5, playerName6)
 
     @Test
     fun `deal cards distributes all the cards across four players`(){
-        val players = Game(Deck()).deal(fourPlayers())
+        val players = Game(Deck()).setTheTable(fourPlayers())
         assertTrue(players.all { it.hand.size == 13 })
 
         val cardsToTest = players.map { it.hand.first() }
-        for(card in cardsToTest) `cards arent shared`(players, card)
+        for(card in cardsToTest) `cards are not shared`(players, card)
     }
 
-    private fun `cards arent shared`(players: Set<Player>, element: Card) {
+    private fun `cards are not shared`(players: Set<Player>, element: Card) {
         val pair: Pair<List<Player>, List<Player>> = players.partition { it.hand.contains(element) }
         val actual: List<Player> = pair.second.filter { it.hand == pair.first.first().hand }
         assertTrue(actual.isEmpty())
@@ -34,7 +34,7 @@ class DeckTest {
 
     @Test
     fun `deal cards distributes all the cards across six players adding extra cards sequentially to as many players as necessary, starting with the first player`(){
-        val players = Game(Deck()).deal(sixPlayers())
+        val players = Game(Deck()).setTheTable(sixPlayers())
         assertTrue(players.take(4).all { it.hand.size == 9 })
         assertTrue(players.takeLast(2).all { it.hand.size == 8 })
     }
