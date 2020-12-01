@@ -5,9 +5,10 @@ class Game(private val deck: Deck = Deck(Deck.standardDeckOf52())) {
 
     fun setTheTable(names: Set<String>): Players {
         val hands = names.pivot(this.deck.cards)
-        val createPlayer: (Pair<String, List<Card>>)
-            -> Player = { (name, hand) -> Player(name, hand.toSet()) }
-        return names.zip(hands).map(createPlayer).toSet()
+        return names
+                .zip(hands)
+                .map { (name, hand) -> Player(name, hand.toSet()) }
+                .toSet()
     }
 
     companion object {

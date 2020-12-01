@@ -1,27 +1,48 @@
 package com.jb.cpwp
 
-import com.jb.cpwp.Suit.*
+import com.jb.cpwp.Game.Companion.openingCard
 
 class Table(suits: Set<Suit>) {
 
     //todo - mutable bad?
-    private val suitRows = suits.associateBy<Suit, Suit, MutableSet<Card>>({ it }, { mutableSetOf() })
-
-    fun openSlots(): Map<Suit, List<Card>> {
-        return if (suitRows[HEARTS]?.isEmpty()!!)
-            mapOf(HEARTS to listOf(Game.openingCard))
-        else
-            mapOf(
-                    HEARTS to listOf(Card(HEARTS, 6), Card(HEARTS, 8)),
-                    DIAMONDS to listOf(Card(DIAMONDS, 7)),
-                    CLUBS to listOf(Card(CLUBS, 7)),
-                    SPADES to listOf(Card(SPADES, 7)),
-            )
+    private val board: Map<Suit, MutableSet<Card>> = suits.associateBy({ it }, { mutableSetOf() })
+    init{
+      createBoard()
     }
 
-    fun play(card: Card) {
-        val set = suitRows[card.suit]
-        set?.add(card)
+    fun openSlots(): Map<Suit, Set<Card>> {
+        return board
     }
 
+    fun play(cardToPlay: Card) {
+        if(board.getValue(cardToPlay.suit).contains(cardToPlay)){
+            addToBoard(cardToPlay)
+        }
+        if(cardToPlay == openingCard){ openBoard() }
+    }
+
+    private fun addToBoard(cardToPlay: Card) {
+        slotsForSuit(cardToPlay.suit).add(cardToPlay)
+    }
+
+    private fun slotsForSuit(suit: Suit) = board.getOrDefault(suit, mutableSetOf())
+
+    private fun openBoard() {
+        if (slotsForSuit(openingCard.suit).isNotEmpty()){
+            Suit.values().forEach { openSuit(it) }
+        }
+        return
+    }
+
+    private fun createBoard(){
+//        board.keys.associateBy ({ it },{ openSuit(it) })
+        openSuit(openingCard.suit)
+    }
+
+    private fun openSuit(suit :Suit) {
+        val slot = slotsForSuit(suit)
+        if (slot.isEmpty()) {
+            slot.add(Card(suit, 7))
+        }
+    }
 }

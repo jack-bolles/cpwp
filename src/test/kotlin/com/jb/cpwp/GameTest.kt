@@ -35,13 +35,22 @@ class GameTest{
 
         canPlayCard(Card(Suit.HEARTS, 7), game.table)
         game.table.play(Game.openingCard)    //todo - table.play(player.play())
-        canNotPlayCard(Card(Suit.HEARTS, 7), game.table)
 
-        canPlayCard(Card(Suit.SPADES, 7), game.table)
-        canPlayCard(Card(Suit.DIAMONDS, 7), game.table)
-        canPlayCard(Card(Suit.CLUBS, 7), game.table)
-        canPlayCard(Card(Suit.HEARTS, 6), game.table)
-        canPlayCard(Card(Suit.HEARTS, 8), game.table)
+        //TODO update the suit that's played
+        //`increments board when suit is played`(game.table)
+        `opens board after opening card is played`(game.table)
+    }
+
+    private fun `opens board after opening card is played`(table: Table) {
+        canPlayCard(Card(Suit.SPADES, 7), table)
+        canPlayCard(Card(Suit.DIAMONDS, 7), table)
+        canPlayCard(Card(Suit.CLUBS, 7), table)
+    }
+
+    private fun `increments board when suit is played`(table: Table) {
+        canNotPlayCard(Card(Suit.HEARTS, 7), table)
+        canPlayCard(Card(Suit.HEARTS, 6), table)
+        canPlayCard(Card(Suit.HEARTS, 8), table)
     }
 
     private fun canPlayCard(card: Card, table: Table) {
@@ -52,5 +61,5 @@ class GameTest{
         assertEquals(false, canPlay(card, table))
     }
 
-    private fun canPlay(card: Card, table: Table) = Player("name", mutableSetOf(card)).canPlay(table)
+    private fun canPlay(card: Card, table: Table) = Player("name", setOf(card)).canPlay(table)
 }
