@@ -6,8 +6,9 @@ class Table(suits: Set<Suit>) {
 
     //todo - mutable bad?
     private val board: Map<Suit, MutableSet<Card>> = suits.associateBy({ it }, { mutableSetOf() })
-    init{
-      createBoard()
+
+    init {
+        createBoard()
     }
 
     fun openSlots(): Map<Suit, Set<Card>> {
@@ -15,34 +16,36 @@ class Table(suits: Set<Suit>) {
     }
 
     fun play(cardToPlay: Card) {
-        if(board.getValue(cardToPlay.suit).contains(cardToPlay)){
+        if (cardToPlay == openingCard) { openBoard() }
+
+        if (canPlay(cardToPlay)) {
             addToBoard(cardToPlay)
         }
-        if(cardToPlay == openingCard){ openBoard() }
     }
 
+    private fun canPlay(cardToPlay: Card) = board.getValue(cardToPlay.suit).contains(cardToPlay)
+
     private fun addToBoard(cardToPlay: Card) {
-        slotsForSuit(cardToPlay.suit).add(cardToPlay)
+        val slotsForSuit = slotsForSuit(cardToPlay.suit)
+        slotsForSuit.remove(cardToPlay)
+        slotsForSuit.addAll(cardToPlay.nextCards())
     }
 
     private fun slotsForSuit(suit: Suit) = board.getOrDefault(suit, mutableSetOf())
 
+    private fun createBoard() { openSuit(openingCard.suit) }
+
     private fun openBoard() {
-        if (slotsForSuit(openingCard.suit).isNotEmpty()){
-            Suit.values().forEach { openSuit(it) }
+        when { slotsForSuit(openingCard.suit).isNotEmpty() -> {
+                Suit.values().forEach { openSuit(it) }
+            }
         }
-        return
     }
 
-    private fun createBoard(){
-//        board.keys.associateBy ({ it },{ openSuit(it) })
-        openSuit(openingCard.suit)
-    }
-
-    private fun openSuit(suit :Suit) {
+    private fun openSuit(suit: Suit) {
         val slot = slotsForSuit(suit)
-        if (slot.isEmpty()) {
-            slot.add(Card(suit, 7))
+        when { slot.isEmpty() -> {
+            slot.add(Card(suit, 7)) }
         }
     }
 }
