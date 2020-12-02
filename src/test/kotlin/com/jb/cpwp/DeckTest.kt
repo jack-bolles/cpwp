@@ -34,7 +34,7 @@ class DeckTest {
 
     @Test
     fun `deal cards distributes all the cards across six players adding extra cards sequentially to as many players as necessary, starting with the first player`() {
-        val players = Game(Deck()).setTheTable(sixPlayers())
+        val players = Game().setTheTable(sixPlayers())
         assertTrue(players.take(4).all { it.hand.size == 9 })
         assertTrue(players.takeLast(2).all { it.hand.size == 8 })
     }

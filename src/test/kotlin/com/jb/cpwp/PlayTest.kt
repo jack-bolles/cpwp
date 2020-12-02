@@ -3,6 +3,7 @@ package com.jb.cpwp
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PlayTest {
@@ -30,8 +31,7 @@ class PlayTest {
         val otherPlayer = players.last { it != firstPlayer }
 
         assertEquals(Game.openingCard, firstPlayer.cardToPlay(game.table.openSlots()))
-        //TODO time to learn about Nullable
-        //assertNull(otherPlayer.cardToPlay(game.table.openSlots()))
+        assertNull(otherPlayer.cardToPlay(game.table.openSlots()))
 
         takeTurn(game.table, firstPlayer)
         assertBoardOpen(game)
@@ -90,7 +90,7 @@ class PlayTest {
     @Test
     fun `simulate large number of players`(){
         val game = Game()
-        val names = Deck.standardDeckOf52().map{"Jack${it.suit}${it.rank}"}.plus("JACKJACKJACK").toSet()
+        val names = generateUniqueButNotImportantAsValuesNames()
         val players = game.setTheTable(names)
 
         while(game.table.openSlots().isNotEmpty()){
@@ -98,10 +98,13 @@ class PlayTest {
         }
     }
 
+    private fun generateUniqueButNotImportantAsValuesNames() =
+            Deck.standardDeckOf52().map { "Jack${it.suit}${it.rank}" }.plus("JACKJACKJACK").toSet()
+
     private fun takeATurn(player: Player?, game: Game) {
         if (player?.canPlay(game.table)!!) {
             takeTurn(game.table, player)
-        } else {
+        } else { //todo rm println
             println("${player.name} can't play: ${player.hand}")
             println()
         }

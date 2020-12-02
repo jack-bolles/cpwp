@@ -9,7 +9,6 @@ enum class Suit {
     companion object {
         fun createSuit(suit: Suit): Set<Card> {
             return (1..13)
-                    .asSequence()
                     .map { Card(suit, it) }
                     .toSet()
         }

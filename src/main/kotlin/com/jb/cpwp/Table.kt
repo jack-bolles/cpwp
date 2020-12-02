@@ -11,21 +11,16 @@ class Table(suits: Set<Suit>) {
         createBoard()
     }
 
-    fun openSlots(): Set<Card> {
-        return board.values.flatten().toSet()
-    }
+    fun openSlots(): Set<Card> { return board.values.flatten().toSet() }
 
     fun play(cardToPlay: Card) {
         if (cardToPlay == openingCard) { openBoard() }
-
-        if (canPlay(cardToPlay)) {
-            addToBoard(cardToPlay)
-        }
+        if (canPlay(cardToPlay)) { playOnBoard(cardToPlay) }
     }
 
     private fun canPlay(cardToPlay: Card) = board.getValue(cardToPlay.suit).contains(cardToPlay)
 
-    private fun addToBoard(cardToPlay: Card) {
+    private fun playOnBoard(cardToPlay: Card) {
         val slotsForSuit = slotsForSuit(cardToPlay.suit)
         slotsForSuit.remove(cardToPlay)
         slotsForSuit.addAll(cardToPlay.nextCards())
