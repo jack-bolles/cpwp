@@ -1,6 +1,6 @@
 package com.jb.cpwp
 
-import com.jb.cpwp.Deck.Companion.standardDeckOf52
+import com.jb.cpwp.Deck.Companion.shuffledDeckOf52
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -19,7 +19,7 @@ class DeckTest {
 
     @Test
     fun `deal cards distributes all the cards across four players`() {
-        val players = Game(Deck()).setTheTable(fourPlayers())
+        val players = Game().setTheTable(fourPlayers())
         assertTrue(players.all { it.hand.size == 13 })
 
         val cardsToTest = players.map { it.hand.first() }
@@ -41,8 +41,8 @@ class DeckTest {
 
     @Test
     fun `verify equals does not care about order`() {
-        val deck1 = Deck(standardDeckOf52())
-        val deck2 = Deck(standardDeckOf52())
+        val deck1 = Deck(shuffledDeckOf52())
+        val deck2 = Deck(shuffledDeckOf52())
         assertEquals(deck1.cards, deck2.cards)
         assertTrue(deck1.cards.areElementsInOrder(deck1.cards))
         assertTrue(!deck1.cards.areElementsInOrder(deck2.cards))

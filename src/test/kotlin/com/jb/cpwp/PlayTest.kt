@@ -3,7 +3,6 @@ package com.jb.cpwp
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PlayTest {
@@ -31,12 +30,23 @@ class PlayTest {
         val otherPlayer = players.last { it != firstPlayer }
 
         assertEquals(Game.openingCard, firstPlayer.cardToPlay(game.table.openSlots()))
-        //time to learn about Nullable
+        //TODO time to learn about Nullable
         //assertNull(otherPlayer.cardToPlay(game.table.openSlots()))
+
+        takeTurn(game.table, firstPlayer)
+        assertBoardOpen(game)
+        assertFalse(firstPlayer.hand.contains(Game.openingCard))
     }
 
-    //other approach - goes against mechanics of play with ppl, but more functional in approach?
-    //board.play(player.strategy, player.hand)
+    private fun assertBoardOpen(game: Game) {
+        assertTrue(game.table.openSlots().containsAll(setOf(
+                Card(Suit.HEARTS, 6),
+                Card(Suit.HEARTS, 8),
+                Card(Suit.DIAMONDS, 7),
+                Card(Suit.CLUBS, 7),
+                Card(Suit.SPADES, 7),
+        )))
+    }
 }
 
 
