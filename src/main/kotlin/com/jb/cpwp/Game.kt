@@ -26,6 +26,12 @@ fun takeTurn(table: Table, player: Player) {
             val cardToPlay = player.cardToPlay(table.openSlots()) //future strategery to come here
             player.play(cardToPlay)
             table.play(cardToPlay)
+
+            println("${player.name} is holding: ${player.hand}")
+            println("They play the $cardToPlay")
+            println(table.openSlots())
+            println()
+
         }
     }
 }

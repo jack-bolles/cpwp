@@ -23,7 +23,7 @@ class PlayTest {
     }
 
     @Test
-    fun `first turn`(){
+    fun `firstPlayers first turn`(){
         val game = Game()
         val players = game.setTheTable(setOf("me", "you"))
         val firstPlayer = Game.whoStarts(players)
@@ -38,7 +38,39 @@ class PlayTest {
         assertFalse(firstPlayer.hand.contains(Game.openingCard))
     }
 
-    private fun assertBoardOpen(game: Game) {
+    @Test
+    fun `secondPlayers first turn`() {
+        val game = Game()
+        val players = game.setTheTable(setOf("me", "you"))
+        val firstPlayer = Game.whoStarts(players)
+        val otherPlayer = players.last { it != firstPlayer }
+
+        while(!otherPlayer.canPlay(game.table)){ takeTurn(game.table, firstPlayer)}
+
+        takeTurn(game.table, otherPlayer)
+        println(firstPlayer.hand)
+        println(otherPlayer.hand)
+        println(game.table.openSlots())
+    }
+
+    @Test
+    fun simulate(){
+        val game = Game()
+        val players = game.setTheTable(setOf("me", "you"))
+        val firstPlayer = Game.whoStarts(players)
+        val otherPlayer = players.last { it != firstPlayer }
+
+        while(firstPlayer.hand.isNotEmpty() || otherPlayer.hand.isNotEmpty()){
+            if(firstPlayer.canPlay(game.table)) { takeTurn(game.table, firstPlayer)}
+            if(otherPlayer.canPlay(game.table)) { takeTurn(game.table, otherPlayer)}
+        }
+
+        println(firstPlayer.hand)
+        println(otherPlayer.hand)
+        println(game.table.openSlots())
+    }
+
+        private fun assertBoardOpen(game: Game) {
         assertTrue(game.table.openSlots().containsAll(setOf(
                 Card(Suit.HEARTS, 6),
                 Card(Suit.HEARTS, 8),
