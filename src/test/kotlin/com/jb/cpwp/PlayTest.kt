@@ -64,13 +64,50 @@ class PlayTest {
             if(firstPlayer.canPlay(game.table)) { takeTurn(game.table, firstPlayer)}
             if(otherPlayer.canPlay(game.table)) { takeTurn(game.table, otherPlayer)}
         }
-
-        println(firstPlayer.hand)
-        println(otherPlayer.hand)
-        println(game.table.openSlots())
     }
 
-        private fun assertBoardOpen(game: Game) {
+    @Test
+    fun simulateFourPlayers(){
+        val game = Game()
+        val players = game.setTheTable(setOf("dem", "dese", "dose", "dother"))
+
+        while(game.table.openSlots().isNotEmpty()){
+            for(player in players)
+            takeATurn(player, game)
+        }
+    }
+
+    @Test
+    fun `simulate odd number of players`(){
+        val game = Game()
+        val players = game.setTheTable(setOf("dem", "dese", "dose"))
+
+        while(game.table.openSlots().isNotEmpty()){
+            for(player in players)
+            takeATurn(player, game)
+        }
+    }
+    @Test
+    fun `simulate large number of players`(){
+        val game = Game()
+        val names = Deck.standardDeckOf52().map{"Jack${it.suit}${it.rank}"}.plus("JACKJACKJACK").toSet()
+        val players = game.setTheTable(names)
+
+        while(game.table.openSlots().isNotEmpty()){
+            for(player in players) takeATurn(player, game)
+        }
+    }
+
+    private fun takeATurn(player: Player?, game: Game) {
+        if (player?.canPlay(game.table)!!) {
+            takeTurn(game.table, player)
+        } else {
+            println("${player.name} can't play: ${player.hand}")
+            println()
+        }
+    }
+
+    private fun assertBoardOpen(game: Game) {
         assertTrue(game.table.openSlots().containsAll(setOf(
                 Card(Suit.HEARTS, 6),
                 Card(Suit.HEARTS, 8),

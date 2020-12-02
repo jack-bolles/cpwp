@@ -12,8 +12,9 @@ data class Card(val suit: Suit, val rank: Int){
                     Card(this.suit, this.rank - 1),
                     Card(this.suit, this.rank + 1))
         } else
-            listOf(Card(this.suit, rank + incrementBy())).filter{ it.rank in 1..13}
-
+            listOf(
+                    Card(this.suit, rank + incrementBy()))
+                    .filter{ it.rank in 1..13}
     }
 
     private fun incrementBy(): Int {

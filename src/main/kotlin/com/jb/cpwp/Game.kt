@@ -27,8 +27,8 @@ fun takeTurn(table: Table, player: Player) {
             player.play(cardToPlay)
             table.play(cardToPlay)
 
-            println("${player.name} is holding: ${player.hand}")
-            println("They play the $cardToPlay")
+            println("${player.name} plays the $cardToPlay")
+            println("and is left holding: ${player.hand}")
             println(table.openSlots())
             println()
 
