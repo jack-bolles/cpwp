@@ -11,8 +11,8 @@ class Table(suits: Set<Suit>) {
         createBoard()
     }
 
-    fun openSlots(): Map<Suit, Set<Card>> {
-        return board
+    fun openSlots(): Set<Card> {
+        return board.values.flatten().toSet()
     }
 
     fun play(cardToPlay: Card) {
