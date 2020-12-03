@@ -5,33 +5,33 @@
 CPWP can be played with 3-8 players. Playing with actual cards and actual people, 6 seems to be a good number.
 
 ### Shuffle all the cards
-**All?**
+**All**
   * if 3-4 players, one deck
   * if 5-8 players, two decks
 
-**Deck?** standard deck of 52 playing cards; 54 if playing a JOKER Variation
+**Deck** standard deck of 52 playing cards; 54 if playing a JOKER Variation
 
-**Cards?** 4 suits, A-K
+**Cards** 4 suits, A-K
 
 ### Deal all the cards
-**Deal?** evenly distribute them to each player
+**Deal** evenly distribute them to each player
 	- Extra cards are dealt out as normal; last (few) player(s) may start with one less card than other players.  
 
 ## PLAY:
 ### The player with the 7 of Diamonds (7D) card goes first
-**First?** turn-based
+**First** turn-based
 
-**7D?** -- not any D, not any 7
+**7D** -- not any D, not any 7
 
 ### The player places a viable card on the board
-**Viable card?**
+**Viable card**
   * any 7
   * the same suit as a 7(s) used to originate a row, and
     * it is the card nearest in ascending value to 7 that has not been played yet, or 			
     * it is the card nearest in descending value to 7 that has not been played yet
   * Ace is low
 
-**Places?**
+**Places**
   * Hearts and Diamonds are played on separate rows
   * if one deck (3-4 players)
     * Clubs and Spades suits are played on one row
@@ -43,18 +43,20 @@ CPWP can be played with 3-8 players. Playing with actual cards and actual people
 >		_ _ _ _ _ _ _ _ _ _ 6 6 7 7 8 8 9 _ _ _ _ _ _ _ _ _
 
 ### A player may play a continuous run
-**Continuous run?**
-		—starts with a viable card
-		—same suit
-		—same vector
-		—incremental
-**May?**
+**Continuous run**
+  * starts with a viable card
+	* same suit
+	* same vector
+	* incremental
+	
+**May**
+
 The player may choose to play a subset of the potential run
-		—the subset set must start with the viable card
-		—it may be a single card
+  * the subset set must start with the viable card
+  * it may be a single card
 
 ### A player must play if they can play
-**Can play?** They have a viable card
+**Can play** -- They have a viable card
 
 ### If a player can’t play, they must say “won’t play; can’t play”
 
