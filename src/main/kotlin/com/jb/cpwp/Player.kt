@@ -4,7 +4,7 @@ typealias Players = Set<Player>
 
 data class Player(val name:String, var hand: Set<Card> = setOf()) {
 
-    fun canPlay(table: Table): Boolean { return canPlay(table.openSlots()) }
+    fun canPlay(table: Table) = canPlay(table.openSlots())
 
     fun cardToPlay(slots: Set<Card>): Card? { return (hand intersect slots).firstOrNull() } //todo - from brute first to ???
 

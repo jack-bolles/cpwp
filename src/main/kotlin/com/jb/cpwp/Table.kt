@@ -26,7 +26,7 @@ class Table(suits: Set<Suit>) {
         slotsForSuit.addAll(cardToPlay.nextCards())
     }
 
-    private fun slotsForSuit(suit: Suit) = board.getOrDefault(suit, mutableSetOf())
+    private fun slotsForSuit(suit: Suit) = board.get(suit)?: error("suit should always be present")
 
     private fun createBoard() { openSuit(openingCard.suit) }
 
@@ -39,8 +39,6 @@ class Table(suits: Set<Suit>) {
 
     private fun openSuit(suit: Suit) {
         val slot = slotsForSuit(suit)
-        when { slot.isEmpty() -> {
-            slot.add(Card(suit, 7)) }
-        }
+        when { slot.isEmpty() -> slot.add(Card(suit, 7)) }
     }
 }

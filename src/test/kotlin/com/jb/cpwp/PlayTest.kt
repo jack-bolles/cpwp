@@ -24,7 +24,7 @@ class PlayTest {
     }
 
     @Test
-    fun `firstPlayers first turn`(){
+    fun `firstPlayers first turn`() {
         val game = Game()
         val players = game.setTheTable(setOf("me", "you"))
         val firstPlayer = Game.whoStarts(players)
@@ -33,7 +33,7 @@ class PlayTest {
         assertEquals(Game.openingCard, firstPlayer.cardToPlay(game.table.openSlots()))
         assertNull(otherPlayer.cardToPlay(game.table.openSlots()))
 
-        takeTurn(game.table, firstPlayer)
+        game.takeTurn(firstPlayer)
         assertBoardOpen(game)
         assertFalse(firstPlayer.hand.contains(Game.openingCard))
     }
@@ -45,56 +45,62 @@ class PlayTest {
         val firstPlayer = Game.whoStarts(players)
         val otherPlayer = players.last { it != firstPlayer }
 
-        while(!otherPlayer.canPlay(game.table)){ takeTurn(game.table, firstPlayer)}
+        while (!otherPlayer.canPlay(game.table)) {
+            game.takeTurn(firstPlayer)
+        }
 
-        takeTurn(game.table, otherPlayer)
+        game.takeTurn(otherPlayer)
         println(firstPlayer.hand)
         println(otherPlayer.hand)
         println(game.table.openSlots())
     }
 
     @Test
-    fun simulate(){
+    fun simulate() {
         val game = Game()
         val players = game.setTheTable(setOf("me", "you"))
         val firstPlayer = Game.whoStarts(players)
         val otherPlayer = players.last { it != firstPlayer }
 
-        while(firstPlayer.hand.isNotEmpty() || otherPlayer.hand.isNotEmpty()){
-            if(firstPlayer.canPlay(game.table)) { takeTurn(game.table, firstPlayer)}
-            if(otherPlayer.canPlay(game.table)) { takeTurn(game.table, otherPlayer)}
+        while (firstPlayer.hand.isNotEmpty() || otherPlayer.hand.isNotEmpty()) {
+            if (firstPlayer.canPlay(game.table)) {
+                game.takeTurn(firstPlayer)
+            }
+            if (otherPlayer.canPlay(game.table)) {
+                game.takeTurn(otherPlayer)
+            }
         }
     }
 
     @Test
-    fun simulateFourPlayers(){
+    fun simulateFourPlayers() {
         val game = Game()
         val players = game.setTheTable(setOf("dem", "dese", "dose", "dother"))
 
-        while(game.table.openSlots().isNotEmpty()){
-            for(player in players)
-            takeATurn(player, game)
+        while (game.table.openSlots().isNotEmpty()) {
+            for (player in players)
+                takeATurn(player, game)
         }
     }
 
     @Test
-    fun `simulate odd number of players`(){
+    fun `simulate odd number of players`() {
         val game = Game()
         val players = game.setTheTable(setOf("dem", "dese", "dose"))
 
-        while(game.table.openSlots().isNotEmpty()){
-            for(player in players)
-            takeATurn(player, game)
+        while (game.table.openSlots().isNotEmpty()) {
+            players.forEach { player -> takeATurn(player, game) }
         }
     }
+
     @Test
-    fun `simulate large number of players`(){
+    fun `simulate large number of players`() {
         val game = Game()
         val names = generateUniqueButNotImportantAsValuesNames()
         val players = game.setTheTable(names)
 
-        while(game.table.openSlots().isNotEmpty()){
-            for(player in players) takeATurn(player, game)
+        while (game.table.openSlots().isNotEmpty()) {
+            for (player in players) takeATurn(player, game)
         }
     }
 
@@ -103,7 +109,7 @@ class PlayTest {
 
     private fun takeATurn(player: Player?, game: Game) {
         if (player?.canPlay(game.table)!!) {
-            takeTurn(game.table, player)
+            game.takeTurn(player)
         } else { //todo rm println
             println("${player.name} can't play: ${player.hand}")
             println()
