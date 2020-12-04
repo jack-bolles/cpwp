@@ -19,7 +19,7 @@ class DeckTest {
 
     @Test
     fun `deal cards distributes all the cards across four players`() {
-        val players = Game().setTheTable(fourPlayers())
+        val players = Game(fourPlayers()).players
         assertTrue(players.all { it.hand.size == 13 })
 
         val cardsToTest = players.map { it.hand.first() }
@@ -34,7 +34,7 @@ class DeckTest {
 
     @Test
     fun `deal cards distributes all the cards across six players adding extra cards sequentially to as many players as necessary, starting with the first player`() {
-        val players = Game().setTheTable(sixPlayers())
+        val players = Game(sixPlayers()).players
         assertTrue(players.take(4).all { it.hand.size == 9 })
         assertTrue(players.takeLast(2).all { it.hand.size == 8 })
     }

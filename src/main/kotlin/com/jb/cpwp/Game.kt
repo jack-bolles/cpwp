@@ -1,15 +1,10 @@
 package com.jb.cpwp
 
-class Game(private val deck: Deck = Deck(Deck.shuffledDeckOf52())) {
+class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
     val table = Table(deck.suits())
+    val players:Players = seatTheTable(names, deck)
 
-    fun setTheTable(names: Set<String>): Players {
-        val hands = names.pivot(this.deck.cards)
-        return names
-                .zip(hands)
-                .map { (name, hand) -> Player(name, hand.toSet()) }
-                .toSet()
-    }
+    fun whoStarts() = players.single { it.hand.contains(openingCard) }
 
     fun takeTurn(player: Player) {
         val cardToPlay = player.cardToPlay(table.openSlots()) ?:
@@ -20,9 +15,17 @@ class Game(private val deck: Deck = Deck(Deck.shuffledDeckOf52())) {
 
         followAlong(player, cardToPlay, table)
     }
+
+    private fun seatTheTable(names: Set<String>, deck: Deck): Players {
+        val hands = names.pivot(deck.cards)
+        return names
+                .zip(hands)
+                .map { (name, hand) -> Player(name, hand.toSet()) }
+                .toSet()
+    }
+
     companion object {
         val openingCard = Card(Suit.HEARTS, 7)
-        fun whoStarts(players: Players): Player = players.single { it.hand.contains(openingCard) }
     }
 }
 

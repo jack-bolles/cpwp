@@ -9,11 +9,11 @@ import kotlin.test.assertTrue
 class PlayTest {
     @Test
     fun `open play`() {
-        val game = Game()
+        val game = Game(setOf("me", "you"))
         val openSlots = game.table.openSlots()
 
-        val players = game.setTheTable(setOf("me", "you"))
-        val firstPlayer = Game.whoStarts(players)
+        val players = game.players
+        val firstPlayer = game.whoStarts()
         val otherPlayer = players.last { it != firstPlayer }
 
         assertTrue(firstPlayer.canPlay(game.table))
@@ -25,9 +25,9 @@ class PlayTest {
 
     @Test
     fun `firstPlayers first turn`() {
-        val game = Game()
-        val players = game.setTheTable(setOf("me", "you"))
-        val firstPlayer = Game.whoStarts(players)
+        val game = Game(setOf("me", "you"))
+        val players = game.players
+        val firstPlayer = game.whoStarts()
         val otherPlayer = players.last { it != firstPlayer }
 
         assertEquals(Game.openingCard, firstPlayer.cardToPlay(game.table.openSlots()))
@@ -40,9 +40,9 @@ class PlayTest {
 
     @Test
     fun `secondPlayers first turn`() {
-        val game = Game()
-        val players = game.setTheTable(setOf("me", "you"))
-        val firstPlayer = Game.whoStarts(players)
+        val game = Game(setOf("me", "you"))
+        val players = game.players
+        val firstPlayer = game.whoStarts()
         val otherPlayer = players.last { it != firstPlayer }
 
         while (!otherPlayer.canPlay(game.table)) {
@@ -57,9 +57,9 @@ class PlayTest {
 
     @Test
     fun simulate() {
-        val game = Game()
-        val players = game.setTheTable(setOf("me", "you"))
-        val firstPlayer = Game.whoStarts(players)
+        val game = Game(setOf("me", "you"))
+        val players = game.players
+        val firstPlayer = game.whoStarts()
         val otherPlayer = players.last { it != firstPlayer }
 
         while (firstPlayer.hand.isNotEmpty() || otherPlayer.hand.isNotEmpty()) {
@@ -74,8 +74,8 @@ class PlayTest {
 
     @Test
     fun simulateFourPlayers() {
-        val game = Game()
-        val players = game.setTheTable(setOf("dem", "dese", "dose", "dother"))
+        val game = Game(setOf("dem", "dese", "dose", "dother"))
+        val players = game.players
 
         while (game.table.openSlots().isNotEmpty()) {
             for (player in players)
@@ -85,8 +85,8 @@ class PlayTest {
 
     @Test
     fun `simulate odd number of players`() {
-        val game = Game()
-        val players = game.setTheTable(setOf("dem", "dese", "dose"))
+        val game = Game(setOf("dem", "dese", "dose"))
+        val players = game.players
 
         while (game.table.openSlots().isNotEmpty()) {
             players.forEach { player -> takeATurn(player, game) }
@@ -95,9 +95,8 @@ class PlayTest {
 
     @Test
     fun `simulate large number of players`() {
-        val game = Game()
-        val names = generateUniqueButNotImportantAsValuesNames()
-        val players = game.setTheTable(names)
+        val game = Game(generateUniqueButNotImportantAsValuesNames())
+        val players = game.players
 
         while (game.table.openSlots().isNotEmpty()) {
             for (player in players) takeATurn(player, game)

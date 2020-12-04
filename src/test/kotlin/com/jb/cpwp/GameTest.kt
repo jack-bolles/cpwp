@@ -1,6 +1,5 @@
 package com.jb.cpwp
 
-import com.jb.cpwp.Game.Companion.whoStarts
 import com.jb.cpwp.Suit.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -16,16 +15,15 @@ class GameTest {
 
     @Test
     fun `start game with 7 of Hearts`() {
-        val game = Game()
-        val players = game.setTheTable(fourPlayerNames())
-        assertTrue(whoStarts(players).hand.contains(Game.openingCard))
-        assertTrue(whoStarts(players).canPlay(game.table))
+        val game = Game(fourPlayerNames())
+        assertTrue(game.whoStarts().hand.contains(Game.openingCard))
+        assertTrue(game.whoStarts().canPlay(game.table))
 
     }
 
     @Test
     fun `play starts with the 7 of Hearts and opens to other suits after the 7 of Hearts`() {
-        val game = Game()
+        val game = Game(fourPlayerNames())
 
         canNotPlayCard(Card(SPADES, 7), game.table)
         canNotPlayCard(Card(DIAMONDS, 7), game.table)
