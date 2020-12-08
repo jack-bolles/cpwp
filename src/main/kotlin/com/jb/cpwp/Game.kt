@@ -5,13 +5,15 @@ class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
     val players:Players = seatTheTable(names, deck)
 
     fun takeTurn(player: Player) {
+        beforeCardIsPlayed(player, table)
+
         val cardToPlay = player.cardToPlay(table.openSlots()) ?:
             return //future strategery to come here
 
         player.play(cardToPlay)
         table.play(cardToPlay)
 
-        followAlong(player, cardToPlay, table)
+        afterCardIsPlayed(player, cardToPlay, table)
     }
 
     fun whoStarts() = players.single { it.hand.contains(openingCard) }
@@ -29,7 +31,13 @@ class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
     }
 }
 
-private fun followAlong(player: Player, cardToPlay: Card?, table: Table) {
+private fun beforeCardIsPlayed(player: Player, table: Table) {
+    println("Open Slots: ${table.openSlots()}")
+    if (!player.canPlay(table)) {println("${player.name} can't play: ${player.hand}") }
+    println()
+}
+
+private fun afterCardIsPlayed(player: Player, cardToPlay: Card?, table: Table) {
     println("${player.name} plays the $cardToPlay")
     println("and is left holding: ${player.hand}")
     println(table.openSlots())

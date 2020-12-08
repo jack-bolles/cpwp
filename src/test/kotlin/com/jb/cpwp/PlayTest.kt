@@ -38,7 +38,10 @@ class PlayTest {
         val otherPlayer = players.last { it != firstPlayer }
 
         assertEquals(Game.openingCard, firstPlayer.cardToPlay(game.table.openSlots()))
+        assertTrue(firstPlayer.canPlay(game.table))
+
         assertNull(otherPlayer.cardToPlay(game.table.openSlots()))
+        assertFalse(otherPlayer.canPlay(game.table))
 
         game.takeTurn(firstPlayer)
         assertBoardOpen(game)
@@ -63,7 +66,7 @@ class PlayTest {
     }
 
     @Test
-    fun simulate() {
+    fun simulateTwoPlayers() {
         val game = Game(setOf("me", "you"))
         val players = game.players
         val firstPlayer = game.whoStarts()
@@ -81,47 +84,29 @@ class PlayTest {
 
     @Test
     fun simulateFourPlayers() {
-        val game = Game(setOf("dem", "dese", "dose", "dother"))
-        val players = game.players
-
-        while (game.table.openSlots().isNotEmpty()) {
-            for (player in players)
-                takeATurn(player, game)
-        }
+        playOut(Game(setOf("dem", "dese", "dose", "dother")))
     }
 
     @Test
     fun `simulate odd number of players`() {
-        val game = Game(setOf("dem", "dese", "dose"))
-        val players = game.players
-
-        while (game.table.openSlots().isNotEmpty()) {
-            players.forEach { player -> takeATurn(player, game) }
-        }
+        playOut(Game(setOf("dem", "dese", "dose")))
     }
 
     @Test
     fun `simulate large number of players`() {
-        val game = Game(generateUniqueButNotImportantAsValuesNames())
-        val players = game.players
+        playOut(Game(generateUniqueButNotImportantAsValuesNames()))
+    }
 
+    private fun playOut(game: Game) {
         while (game.table.openSlots().isNotEmpty()) {
-            for (player in players) takeATurn(player, game)
+            game.players.forEach { player -> game.takeTurn(player) }
         }
+
+        assertTrue(game.players.flatMap { it.hand  }.isEmpty())
     }
 
     private fun generateUniqueButNotImportantAsValuesNames() =
             Deck.standardDeckOf52().map { "Jack${it.suit}${it.rank}" }.plus("JACKJACKJACK").toSet()
-
-    private fun takeATurn(player: Player?, game: Game) {
-        println("Open Slots: ${game.table.openSlots()}")
-        if (player?.canPlay(game.table)!!) {
-            game.takeTurn(player)
-        } else { //todo rm println
-            println("${player.name} can't play: ${player.hand}")
-            println()
-        }
-    }
 
     private fun assertBoardOpen(game: Game) {
         assertTrue(game.table.openSlots().containsAll(setOf(
