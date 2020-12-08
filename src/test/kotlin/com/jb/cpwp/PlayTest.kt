@@ -107,6 +107,7 @@ class PlayTest {
             Deck.standardDeckOf52().map { "Jack${it.suit}${it.rank}" }.plus("JACKJACKJACK").toSet()
 
     private fun takeATurn(player: Player?, game: Game) {
+        println("Open Slots: ${game.table.openSlots()}")
         if (player?.canPlay(game.table)!!) {
             game.takeTurn(player)
         } else { //todo rm println

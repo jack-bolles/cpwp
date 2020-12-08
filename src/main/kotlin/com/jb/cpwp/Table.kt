@@ -7,17 +7,19 @@ class Table(suits: Set<Suit>) {
     private val board: Map<Suit, MutableSet<Card>> = suits.associateBy({ it }, { mutableSetOf() })
 
     init {
-        createBoard()
+        openBoard()
     }
 
     fun openSlots(): Set<Card> { return board.values.flatten().toSet() }
 
     fun play(cardToPlay: Card) {
         if (cardToPlay == openingCard) { openBoard() }
-        if (canPlay(cardToPlay)) { playOnBoard(cardToPlay) }
+        when { canPlay(cardToPlay) -> { playOnBoard(cardToPlay) } }
     }
 
-    private fun canPlay(cardToPlay: Card) = board.getValue(cardToPlay.suit).contains(cardToPlay)
+    private fun canPlay(cardToPlay: Card): Boolean {
+        return board.getValue(cardToPlay.suit).contains(cardToPlay)
+    }
 
     private fun playOnBoard(cardToPlay: Card) {
         val slotsForSuit = slotsForSuit(cardToPlay.suit)
@@ -25,20 +27,19 @@ class Table(suits: Set<Suit>) {
         slotsForSuit.addAll(cardToPlay.nextCards())
     }
 
-    private fun slotsForSuit(suit: Suit) = board.get(suit)?: error("suit should always be present")
-
-    private fun createBoard() { openSuit(openingCard.suit) }
-
-    private fun openBoard() {
-        when { slotsForSuit(openingCard.suit).isNotEmpty() -> {
-                Suit.values().forEach { openSuit(it) }
-            }
-        }
+    private fun openSuit(suit: Suit) {
+        when { slotsForSuit(suit).isEmpty() -> slotsForSuit(suit).add(Card(suit, 7)) }
     }
 
-    private fun openSuit(suit: Suit) {
-        val slot = slotsForSuit(suit)
-        when { slot.isEmpty() -> slot.add(Card(suit, 7)) }
+    private fun slotsForSuit(suit: Suit) = board[suit] ?: error("suit should always be present")
+
+    private fun openBoard() {
+        if (slotsForSuit(openingCard.suit).isEmpty()) {
+            openSuit(openingCard.suit)
+        } else if (slotsForSuit(openingCard.suit).isNotEmpty()) {
+            Suit.values().forEach { openSuit(it) }
+        }
+        //else - board is already open
     }
 }
 
@@ -52,6 +53,6 @@ internal fun Card.nextCards(): List<Card> {
     } else
         listOf(
                 Card(this.suit, rank + incrementBy()))
-                .filter{ it.rank in 1..13}
+                .filter { it.rank in 1..13 }
 }
 

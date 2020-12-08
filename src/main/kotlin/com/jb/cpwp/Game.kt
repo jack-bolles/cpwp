@@ -6,7 +6,7 @@ class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
 
     fun takeTurn(player: Player) {
         val cardToPlay = player.cardToPlay(table.openSlots()) ?:
-        return //future strategery to come here
+            return //future strategery to come here
 
         player.play(cardToPlay)
         table.play(cardToPlay)
