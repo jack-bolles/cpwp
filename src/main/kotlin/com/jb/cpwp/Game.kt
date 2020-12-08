@@ -4,8 +4,6 @@ class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
     val table = Table(deck.suits())
     val players:Players = seatTheTable(names, deck)
 
-    fun whoStarts() = players.single { it.hand.contains(openingCard) }
-
     fun takeTurn(player: Player) {
         val cardToPlay = player.cardToPlay(table.openSlots()) ?:
         return //future strategery to come here
@@ -15,6 +13,8 @@ class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
 
         followAlong(player, cardToPlay, table)
     }
+
+    fun whoStarts() = players.single { it.hand.contains(openingCard) }
 
     private fun seatTheTable(names: Set<String>, deck: Deck): Players {
         val hands = names.pivot(deck.cards)

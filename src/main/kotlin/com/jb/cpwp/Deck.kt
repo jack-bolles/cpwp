@@ -1,6 +1,5 @@
 package com.jb.cpwp
 
-//TODO - could be a typealias... how do companion objects work with TA?
 data class Deck (val cards: Set<Card> = shuffledDeckOf52()){
     fun suits(): Set<Suit> {
         return cards.map { it.suit}.toSet()

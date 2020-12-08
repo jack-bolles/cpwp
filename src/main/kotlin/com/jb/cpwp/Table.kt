@@ -4,7 +4,6 @@ import com.jb.cpwp.Game.Companion.openingCard
 
 class Table(suits: Set<Suit>) {
 
-    //todo - mutable bad?
     private val board: Map<Suit, MutableSet<Card>> = suits.associateBy({ it }, { mutableSetOf() })
 
     init {
@@ -42,3 +41,17 @@ class Table(suits: Set<Suit>) {
         when { slot.isEmpty() -> slot.add(Card(suit, 7)) }
     }
 }
+
+internal fun Card.nextCards(): List<Card> {
+    fun incrementBy(): Int = StrictMath.abs(rank - 7) / (rank - 7)
+
+    return if (this.rank == 7) {
+        listOf(
+                Card(this.suit, this.rank - 1),
+                Card(this.suit, this.rank + 1))
+    } else
+        listOf(
+                Card(this.suit, rank + incrementBy()))
+                .filter{ it.rank in 1..13}
+}
+
