@@ -8,6 +8,13 @@ import kotlin.test.assertTrue
 
 class PlayTest {
     @Test
+    fun `game starts with 7 of Hearts`() {
+        val game = Game(setOf("dem", "dese", "dose", "dother"))
+        assertTrue(game.whoStarts().hand.contains(Game.openingCard))
+        assertTrue(game.whoStarts().canPlay(game.table))
+    }
+
+    @Test
     fun `open play`() {
         val game = Game(setOf("me", "you"))
         val openSlots = game.table.openSlots()
