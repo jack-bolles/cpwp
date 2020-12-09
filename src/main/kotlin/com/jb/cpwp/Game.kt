@@ -5,6 +5,8 @@ class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
     val players:Players = seatTheTable(names, deck)
 
     fun playCard(player: Player, cardToPlay: Card) {
+        //todo - ensure guard moved to ext function. Should guard for canPlay() here? before calling?
+        //return null/current instance of can't or throw something?
         player.play(cardToPlay)
         table = table.play(cardToPlay)
     }
