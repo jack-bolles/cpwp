@@ -1,19 +1,12 @@
 package com.jb.cpwp
 
 class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
-    val table = Table(deck.suits())
+    var table = Table()
     val players:Players = seatTheTable(names, deck)
 
-    fun takeTurn(player: Player) {
-        beforeCardIsPlayed(player, table)
-
-        val cardToPlay = player.cardToPlay(table.openSlots()) ?:
-            return //future strategery to come here
-
+    fun playCard(player: Player, cardToPlay: Card) {
         player.play(cardToPlay)
-        table.play(cardToPlay)
-
-        afterCardIsPlayed(player, cardToPlay, table)
+        table = table.play(cardToPlay)
     }
 
     fun whoStarts() = players.single { it.hand.contains(openingCard) }
@@ -31,8 +24,19 @@ class Game(names: Set<String>, deck: Deck = Deck(Deck.shuffledDeckOf52())) {
     }
 }
 
+fun Game.takeTurn(player: Player) {
+    beforeCardIsPlayed(player, table)
+
+    val cardToPlay = player.cardToPlay(table.availableSlots()) ?:
+        return //future strategery to come here
+
+    playCard(player, cardToPlay)
+
+    afterCardIsPlayed(player, cardToPlay, table)
+}
+
 private fun beforeCardIsPlayed(player: Player, table: Table) {
-    println("Open Slots: ${table.openSlots()}")
+    println("Open Slots: ${table.availableSlots()}")
     if (!player.canPlay(table)) {println("${player.name} can't play: ${player.hand}") }
     println()
 }
@@ -40,7 +44,7 @@ private fun beforeCardIsPlayed(player: Player, table: Table) {
 private fun afterCardIsPlayed(player: Player, cardToPlay: Card?, table: Table) {
     println("${player.name} plays the $cardToPlay")
     println("and is left holding: ${player.hand}")
-    println(table.openSlots())
+    println(table.availableSlots())
     println()
 }
 

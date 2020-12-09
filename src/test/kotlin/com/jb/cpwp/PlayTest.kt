@@ -1,10 +1,7 @@
 package com.jb.cpwp
 
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class PlayTest {
     @Test
@@ -17,7 +14,7 @@ class PlayTest {
     @Test
     fun `open play`() {
         val game = Game(setOf("me", "you"))
-        val openSlots = game.table.openSlots()
+        val openSlots = game.table.availableSlots()
 
         val players = game.players
         val firstPlayer = game.whoStarts()
@@ -37,10 +34,10 @@ class PlayTest {
         val firstPlayer = game.whoStarts()
         val otherPlayer = players.last { it != firstPlayer }
 
-        assertEquals(Game.openingCard, firstPlayer.cardToPlay(game.table.openSlots()))
+        assertEquals(Game.openingCard, firstPlayer.cardToPlay(game.table.availableSlots()))
         assertTrue(firstPlayer.canPlay(game.table))
 
-        assertNull(otherPlayer.cardToPlay(game.table.openSlots()))
+        assertNull(otherPlayer.cardToPlay(game.table.availableSlots()))
         assertFalse(otherPlayer.canPlay(game.table))
 
         game.takeTurn(firstPlayer)
@@ -59,10 +56,10 @@ class PlayTest {
             game.takeTurn(firstPlayer)
         }
 
+        val handBefore = otherPlayer.hand
         game.takeTurn(otherPlayer)
-        println(firstPlayer.hand)
-        println(otherPlayer.hand)
-        println(game.table.openSlots())
+        val handAfter = otherPlayer.hand
+        assertNotEquals(handBefore, handAfter)
     }
 
     @Test
@@ -98,7 +95,7 @@ class PlayTest {
     }
 
     private fun playOut(game: Game) {
-        while (game.table.openSlots().isNotEmpty()) {
+        while (game.table.availableSlots().isNotEmpty()) {
             game.players.forEach { player -> game.takeTurn(player) }
         }
 
@@ -109,7 +106,7 @@ class PlayTest {
             Deck.standardDeckOf52().map { "Jack${it.suit}${it.rank}" }.plus("JACKJACKJACK").toSet()
 
     private fun assertBoardOpen(game: Game) {
-        assertTrue(game.table.openSlots().containsAll(setOf(
+        assertTrue(game.table.availableSlots().containsAll(setOf(
                 Card(Suit.HEARTS, 6),
                 Card(Suit.HEARTS, 8),
                 Card(Suit.DIAMONDS, 7),

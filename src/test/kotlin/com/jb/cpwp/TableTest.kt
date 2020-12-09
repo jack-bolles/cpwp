@@ -8,7 +8,7 @@ class TableTest {
 
     @Test
     fun `table opens with the 7 of Hearts then opens to other suits after the 7 of Hearts`() {
-        val table = Table(Deck().suits())
+        val table = Table()
 
         canNotPlayCard(Card(SPADES, 7), table)
         canNotPlayCard(Card(DIAMONDS, 7), table)
@@ -17,10 +17,10 @@ class TableTest {
         canNotPlayCard(Card(HEARTS, 8), table)
 
         canPlayCard(Card(HEARTS, 7), table)
-        table.play(Game.openingCard)
+        val newTable = table.play(Game.openingCard)
 
-        `increments board when suit is played`(table)
-        `opens board after opening card is played`(table)
+        `increments board when suit is played`(newTable)
+        `opens board after opening card is played`(newTable)
     }
 
     private fun `increments board when suit is played`(table: Table) {
